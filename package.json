@@ -1,11 +1,11 @@
 {
   "name": "coc-jira-complete",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "jberglinds",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jberglinds/coc-jira-complete"
+    "url": "https://github.com/msvechla/coc-jira-complete"
   },
   "main": "index.js",
   "keywords": [
