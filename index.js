@@ -7,7 +7,7 @@ const fetch = require('node-fetch')
 const fetchIssues = (workspaceUrl, email, apiKey) => {
   const auth = Buffer.from(`${email}:${apiKey}`).toString('base64')
   const headers = new fetch.Headers({
-    Authorization: `Basic ${auth}`
+    Authorization: `Basic ${auth}`,
   })
   const username = email.replace('@', '\\u0040') // Escape @ character
   const query = `assignee=${username}+and+resolution=unresolved`
@@ -16,19 +16,20 @@ const fetchIssues = (workspaceUrl, email, apiKey) => {
     `${workspaceUrl}/rest/api/2/search?jql=${query}&fields=${fields}`,
     { headers }
   )
-    .then(res => res.json())
-    .then(json =>
-      json.issues.map(issue => ({
+    .then((res) => res.json())
+    .then((json) =>
+      json.issues.map((issue) => ({
         key: issue.key,
-        title: issue.fields.summary
+        title: issue.fields.summary,
       }))
     )
 }
 
-exports.activate = async context => {
+exports.activate = async (context) => {
   const config = workspace.getConfiguration('jira')
 
-  const workspaceUrl = config.get('workspaceUrl') || process.env.JIRA_WORKSPACE_URL
+  const workspaceUrl =
+    config.get('workspaceUrl') || process.env.JIRA_WORKSPACE_URL
   const email = config.get('user.email') || process.env.JIRA_USER_EMAIL
   const apiKey = config.get('user.apiKey') || process.env.JIRA_USER_API_KEY
 
@@ -56,14 +57,14 @@ exports.activate = async context => {
     triggerOnly: false,
     doComplete: async () => {
       return {
-        items: issues.map(issue => {
+        items: issues.map((issue) => {
           return {
             word: issue.key,
-            abbr: `${issue.key} ${issue.title}`
+            abbr: `${issue.key} ${issue.title}`,
           }
-        })
+        }),
       }
-    }
+    },
   }
   context.subscriptions.push(sources.createSource(source))
 }
